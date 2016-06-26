@@ -68,6 +68,5 @@
                 angular.extend(values, constants);
             }
         };
-
     });
 })(angular);

@@ -37,19 +37,18 @@
         };
 
         FileNavigator.prototype.list = function() {
-            debugger
+
             return this.apiMiddleware.list(this.currentPath, this.deferredHandler.bind(this));
         };
 
         FileNavigator.prototype.refresh = function() {
-            debugger
+
             var self = this;
             var path = self.currentPath.join('/');
             self.requesting = true;
             self.fileList = [];
             return self.list().then(function(data) {
                 self.fileList = (data.result || []).map(function(file) {
-                    debugger
                     return new Item(file, self.currentPath);
                 });
                 self.buildTree(path);
