@@ -62,6 +62,7 @@
             var flatNodes = [], selectedNode = {};
 
             function recursive(parent, item, path) {
+                debugger
                 var absName = path ? (path + '/' + item.model.name) : item.model.name;
                 if (parent.name.trim() && path.trim().indexOf(parent.name) !== 0) {
                     parent.nodes = [];
@@ -80,11 +81,13 @@
                 }
                 
                 parent.nodes = parent.nodes.sort(function(a, b) {
+                    debugger
                     return a.name.toLowerCase() < b.name.toLowerCase() ? -1 : a.name.toLowerCase() === b.name.toLowerCase() ? 0 : 1;
                 });
             }
 
             function flatten(node, array) {
+                debugger
                 array.push(node);
                 for (var n in node.nodes) {
                     flatten(node.nodes[n], array);
@@ -92,6 +95,7 @@
             }
 
             function findNode(data, path) {
+                debugger
                 return data.filter(function (n) {
                     return n.name === path;
                 })[0];
@@ -108,7 +112,9 @@
             }
         };
 
+
         FileNavigator.prototype.folderClick = function(item) {
+            debugger
             this.currentPath = [];
             if (item && item.isFolder()) {
                 this.currentPath = item.model.fullPath().split('/').splice(1);
@@ -117,6 +123,7 @@
         };
 
         FileNavigator.prototype.upDir = function() {
+            debugger
             if (this.currentPath[0]) {
                 this.currentPath = this.currentPath.slice(0, -1);
                 this.refresh();

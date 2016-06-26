@@ -10,20 +10,37 @@ exports.setRequestUrl = function (app) {
                 )
             }
         )
-    })
+    });
 
     app.post('/list', function (req, res) {
         var path = req.body.path;
 
-        ftpService.list(
-            path,
-            function (err, items) {
-                res.json(
-                    {
-                        result: items
-                    }
-                )
-            }
-        )
-    })
+        ftpService.list(path, null).success(function (data) {
+            res.json(
+                {
+                    result: data
+                }
+            )
+        });
+
+    });
+
+    app.post('/angularJs/backend', function (req, res) {
+        var path = req.body.path;
+        var action = req.body.action;
+
+        switch (action) {
+            case 'list':
+                ftpService.list(path, null).then(function (data) {
+                    res.json(
+                        {
+                            result: data
+                        }
+                    )
+                });
+                break;
+        }
+
+
+    });
 };
