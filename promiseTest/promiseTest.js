@@ -3,24 +3,34 @@ var Promise = require('bluebird');
 var Client = require('ftp');
 var connectedStatus = false;
 
-// var options = {
-//     user: 'lcn',
-//     host: 'localhost',
-//     port: 21,
-//     password: 'lcn123',
-//     secure: false
-// };
+var options = {
+    user: 'lcn',
+    host: 'localhost',
+    port: 21,
+    password: 'lcn123',
+    secure: false
+};
 //
-// var connect = function () {
-//     return new Promise(function (resolve, reject) {
-//         var ftpClient = new Client();
-//         Promise.promisifyAll(Object.getPrototypeOf(ftpClient));
-//         ftpClient.connect(options);
-//         ftpClient.on('ready', function () {
-//             resolve(ftpClient);
-//         });
-//     });
-// };
+var connect = function () {
+    return new Promise(function (resolve, reject) {
+        var ftpClient = new Client();
+        Promise.promisifyAll(Object.getPrototypeOf(ftpClient));
+        ftpClient.connect(options);
+        ftpClient.on('ready', function () {
+            resolve(ftpClient);
+        });
+    });
+};
+
+var download = function (path) {
+    connect().then(ftpClient => {
+        ftpClient.getAsync(path).then(reader => {
+            reader.pipe(console);
+        })
+    })
+};
+
+download('/hello.txt')
 //
 //
 // process.on('promiseFulfilled', function (promise, child) {
@@ -90,20 +100,20 @@ var data = [2000, 1, 1000];
 //     console.log(res);
 // });
 
-Promise.reduce(data, (total, item, index) => {
-    return makePromise(index, item).then(res => {
-        return total + res;
-    });
-}, '').then(res => {
-    console.log(res)
-});
-
-
-Promise.mapSeries(data, (item, index)=> makePromise(index, item), 0).then(res => {
-    console.log(res);
-});
-
-
-Promise.each(data, (item, index)=> makePromise(index, item), 0).then(res => {
-    console.log(res);
-});
+// Promise.reduce(data, (total, item, index) => {
+//     return makePromise(index, item).then(res => {
+//         return total + res;
+//     });
+// }, '').then(res => {
+//     console.log(res)
+// });
+//
+//
+// Promise.mapSeries(data, (item, index)=> makePromise(index, item), 0).then(res => {
+//     console.log(res);
+// });
+//
+//
+// Promise.each(data, (item, index)=> makePromise(index, item), 0).then(res => {
+//     console.log(res);
+// });

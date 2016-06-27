@@ -63,5 +63,9 @@ var list2 = function (path) {
     })
 };
 
+var download = function (loalpath) {
+
+};
+
 exports.list = list2;
 

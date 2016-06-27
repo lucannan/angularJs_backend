@@ -6,20 +6,18 @@
             this.owner = this.getRwxObj();
             this.group = this.getRwxObj();
             this.others = this.getRwxObj();
+            if (initValue) {
+                debugger
+                var codes = isNaN(initValue) ? this.convertfromCode(initValue) : this.convertfromOctal(initValue);
 
-            //if (initValue) {
-            //    var codes = isNaN(initValue) ?
-            //        this.convertfromCode(initValue):
-            //        this.convertfromOctal(initValue);
-            //
-            //    if (! codes) {
-            //        throw new Error('Invalid chmod input data (%s)'.replace('%s', initValue));
-            //    }
-            //
-            //    this.owner = codes.owner;
-            //    this.group = codes.group;
-            //    this.others = codes.others;
-            //}
+                if (!codes) {
+                    throw new Error('Invalid chmod input data (%s)'.replace('%s', initValue));
+                }
+
+                this.owner = codes.owner;
+                this.group = codes.group;
+                this.others = codes.others;
+            }
         };
 
         Chmod.prototype.toOctal = function(prepend, append) {
@@ -59,13 +57,20 @@
         };
 
         Chmod.prototype.convertfromCode = function (str) {
-            str = ('' + str).replace(/\s/g, '');
-            str = str.length === 10 ? str.substr(1) : str;
-            if (! /^[-rwxts]{9}$/.test(str)) {
-                return;
-            }
+            // str = ('' + str).replace(/\s/g, '');
+            // str = str.length === 10 ? str.substr(1) : str;
+            // if (! /^[-rwxts]{9}$/.test(str)) {
+            //     return;
+            // }
+            //
+            // var result = [], vals = str.match(/.{1,3}/g);
+            var result = [];
+            var vals = [
+                str.user,
+                str.group,
+                str.other
+            ]
 
-            var result = [], vals = str.match(/.{1,3}/g);
             for (var i in vals) {
                 var rwxObj = this.getRwxObj();
                 rwxObj.read  = /r/.test(vals[i]);

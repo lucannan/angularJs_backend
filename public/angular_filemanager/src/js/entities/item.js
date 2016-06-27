@@ -3,6 +3,7 @@
     angular.module('FileManagerApp').factory('item', ['fileManagerConfig', 'chmod', function(fileManagerConfig, Chmod) {
 
         var Item = function(model, path) {
+            debugger
             var rawModel = {
                 name: model && model.name || '',
                 path: path || [],
