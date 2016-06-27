@@ -13,6 +13,7 @@ var options = {
 var connect = function () {
     return new Promise(function (resolve, reject) {
         var ftpClient = new Client();
+        Promise.promisifyAll(Object.getPrototypeOf(ftpClient));
         ftpClient.connect(options);
         ftpClient.on('ready', function () {
             resolve(ftpClient);
@@ -21,7 +22,7 @@ var connect = function () {
 };
 
 
-var list = function (path, callback) {
+var list = function (path) {
     return new Promise(function (resolve, reject) {
         connect().then(function (ftpClient) {
             var folders = [];
@@ -40,8 +41,27 @@ var list = function (path, callback) {
             })
         })
     });
-
 };
 
-exports.list = list;
+
+var list2 = function (path) {
+    return connect().then(ftpClient => {
+        return ftpClient.listAsync(path).then(list => {
+            var folders = [];
+            var items = [];
+            list.forEach(data => {
+                if (data['type'] === 'd') {
+                    folders.push(data);
+                } else if (data['type'] === '-') {
+                    items.push(data);
+                }
+            });
+            Array.prototype.push.apply(items, folders);
+            ftpClient.end();
+            return items;
+        })
+    })
+};
+
+exports.list = list2;
 

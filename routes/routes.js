@@ -31,7 +31,7 @@ exports.setRequestUrl = function (app) {
 
         switch (action) {
             case 'list':
-                ftpService.list(path, null).then(function (data) {
+                ftpService.list(path).then(function (data) {
                     res.json(
                         {
                             result: data
