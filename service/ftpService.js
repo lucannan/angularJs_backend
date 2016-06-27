@@ -1,7 +1,5 @@
 "use strict";
-var async = require('async');
 var Promise = require('bluebird');
-// var Promise = require('q');
 var Client = require('ftp');
 
 var options = {
@@ -11,8 +9,6 @@ var options = {
     password: 'lcn123',
     secure: false
 };
-
-var connectedStatus = false;
 
 var connect = function () {
     return new Promise(function (resolve, reject) {
@@ -25,10 +21,10 @@ var connect = function () {
 };
 
 
-var list2 = function (path, callback) {
+var list = function (path, callback) {
     return new Promise(function (resolve, reject) {
         connect().then(function (ftpClient) {
-            var folder = [];
+            var folders = [];
             var items = [];
             ftpClient.list(path, function (err, list) {
                 list.forEach(function (data) {
@@ -38,7 +34,7 @@ var list2 = function (path, callback) {
                         items.push(data);
                     }
                 });
-                Array.prototype.push.apply(items, folder);
+                Array.prototype.push.apply(items, folders);
                 ftpClient.end();
                 resolve(items);
             })
@@ -47,23 +43,5 @@ var list2 = function (path, callback) {
 
 };
 
-exports.list = list2;
+exports.list = list;
 
-
-//connect().then(function (ftpClient) {
-//    connectedStatus = true;
-//    var folder = [];
-//    var items = [];
-//    ftpClient.list(path, function (err, list) {
-//        list.forEach(function (data) {
-//            if (data['type'] === 'd') {
-//                folder.push(data);
-//            } else if (data['type'] === '-') {
-//                items.push(data);
-//            }
-//        });
-//        Array.prototype.push.apply(items, folder);
-//        ftpClient.end();
-//        callback(null, items);
-//    });
-//});
