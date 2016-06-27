@@ -1,7 +1,8 @@
 "use strict";
 var async = require('async');
-var Promise = require('bluebird')
-var Client = Promise.promisifyAll(require('ftp'));
+var Promise = require('bluebird');
+// var Promise = require('q');
+var Client = require('ftp');
 
 var options = {
     host: 'localhost',

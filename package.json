@@ -15,7 +15,7 @@
     "serve-favicon": "~2.3.0",
     "ftp": "*",
     "async": "*",
-    "Q":"*",
+    "q": "*",
     "bluebird":"*"
   }
 }
